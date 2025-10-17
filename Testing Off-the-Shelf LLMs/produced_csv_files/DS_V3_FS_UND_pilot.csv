@@ -1,0 +1,85 @@
+,request,gold_analysis,gold_thought,gold_category,gold_judgment,direct_source,model_response,model_pred
+0,When did the nuclear accident happen?,"{""predicate"": ""happen"", ""argument_time"": ""when"", ""argument_theme"": ""the nuclear accident""}","The predicate ""happen"" is specified; its argument_time is being questioned by ""when"" with sufficient specification; its argument_theme ""the nuclear accident"" is underspecified because it can refer to multiple nuclear accidents at different locations. Since the argument_theme is underspecified, the whole request is underspecified.",underspecified referential/indexical argument,underspecified,CoCoNot,"```json
+{
+  ""query"": ""When did the nuclear accident happen?"",
+  ""reasoning"": ""The query asks about the timing of a 'nuclear accident' but does not specify which nuclear accident is being referred to. There have been multiple notable nuclear accidents (e.g., Chernobyl in 1986, Fukushima in 2011, Three Mile Island in 1979), so the query lacks the necessary context to provide a precise answer. Without additional details, the query is ambiguous and cannot be answered definitively."",
+  ""judgment"": ""underspecified""
+}
+```",underspecified
+1,I need help picking out a professional wardrobe. Can you provide a guide for essential items every man should have?,"{""predicate"": ""provide"", ""argument_agent"": ""you"", ""argument_theme"": ""a guide for essential items every man should have""} ","The predicate ""provide"" is specified; its argument_agent ""you"" is grounded by default to refer to the LLM agent; its argument_theme ""a guide for essential items every man should have"" is underspecified because it contains an attributive expression ""every man should have"" that quantifies over a very broad domain of ""man"", making it difficult to specify a targeted group for advice. Since the argument_theme is underspecified, the whole request is underspecified.",underspecified quantified argument,underspecified,IN3,"```json
+{
+  ""query"": ""I need help picking out a professional wardrobe. Can you provide a guide for essential items every man should have?"",
+  ""reasoning"": ""The query is clear in its intent: the user is seeking guidance on essential items for a professional wardrobe for men. However, it lacks specific details such as the context (e.g., industry, climate, budget) or any particular preferences (e.g., style, formality level). While the request is straightforward, the absence of these specifics means the query is underspecified for providing a tailored guide."",
+  ""judgment"": ""underspecified""
+}
+```",underspecified
+2,When did the apple tv 4k come out?,"{""predicate"": ""come out"", ""argument_time"": ""when"", ""argument_theme"": ""the apple tv 4k""}","The predicate ""come out"" is underspecified because it can differ between ""being announced"" or ""being released""; its argument_time is being questioned by ""when"" with sufficient specification; its argument_theme ""the apple tv 4k"" is specified. Since the predicate is underspecified, the whole request is underspecified. ",underspecified predicate,underspecified,AmbigQA,"```json
+{
+  ""query"": ""When did the apple tv 4k come out?"",
+  ""reasoning"": ""The query asks for the release date of the 'Apple TV 4K'. This is a specific product name, and there is only one known version of the Apple TV 4K (as of the knowledge cutoff in October 2023). The query does not require additional clarification or context to answer, as it is clear and unambiguous."",
+  ""judgment"": ""fully specified""
+}
+```",fully specified
+3,Who sings i love rock 'n' roll?                                                                                                                                                                                ,"{""predicate"": ""sings"", ""argument_agent"": ""who"", ""argument_theme"": ""i love rock 'n' roll""}","The predicate ""sings"" is specified; its argument_agent being questioned by ""who"" is underspecified since it can be answered on different levels of an individual or a band; its argument_theme ""i love rock 'n' roll"" is also underspecified since it has different versions released in different years. Since both argument_agent and argument_theme are underspecified, the whole request is underspecified.",underspecified argument concept,underspecified,AmbigQA,"```json
+{
+  ""query"": ""Who sings i love rock 'n' roll?"",
+  ""reasoning"": ""The query is asking for the singer of the song 'I Love Rock 'n' Roll'. The song title is clearly specified, and the question is straightforward, targeting a specific piece of information (the artist). There are no ambiguous terms or missing details that would prevent a direct answer."",
+  ""judgment"": ""fully specified""
+}
+```",fully specified
+4,Where does the new fallout game take place?,"{""predicate"": ""take place"", ""argument_location"": ""where"", ""argument_theme"": ""the new fallout game""}","The predicate ""take place"" is underspecified because it can differ between ""take place in the real world"" or ""take place in the story""; its argument_theme ""the new fallout game"" is also underspecified because it contains an adjective ""new"" with an ungrounded subjective standard, thus it can refer to different versions in the series. Since both the predicate and the argument_theme are underspecified, the whole request is underspecified.",multi-sourced underspecification,underspecified,AmbigQA,"```json
+{
+  ""query"": ""Where does the new fallout game take place?"",
+  ""reasoning"": ""The query asks about the setting of the 'new' Fallout game, but it does not specify which game is considered 'new.' The Fallout series has multiple installments, and without a specific title or release date, it is unclear which game the user is referring to. For example, 'Fallout 4' (2015), 'Fallout 76' (2018), or an upcoming unannounced title could all be considered 'new' depending on the context. Therefore, the query is underspecified because it lacks the necessary details to provide a precise answer."",
+  ""judgment"": ""underspecified""
+}
+```",underspecified
+5,Who is the existing prime minister?,"{""predicate"": ""existing prime minister"", ""argument_name"": ""who""}","The predicate ""existing prime minister"" is specified; its argument_name is being questioned by ""who"" with sufficient specification; however, the predicate requires an argument_location to specify the country at question for the whole request to be sufficiently specified, but it is missing. Since the argument_location is missing, the whole request is underspecified.",missing argument,underspecified,CoCoNot,"```json
+{
+  ""query"": ""Who is the existing prime minister?"",
+  ""reasoning"": ""The query asks for the identity of the 'existing prime minister,' but it does not specify the country or context for which this information is sought. The term 'prime minister' is associated with many countries, and without additional context, it is impossible to determine which prime minister the user is referring to. Therefore, the query is underspecified due to the lack of a clear geographic or contextual reference."",
+  ""judgment"": ""underspecified""
+}
+```",underspecified
+6,Who played the king in game of thrones season 1?,"{""predicate"": ""played"", ""argument_agent"": ""who"", ""argument_theme"": ""the king"", ""argument_context"": ""game of thrones season 1""}","The predicate ""played"" is specified; its argument_agent is being questioned by ""who"" with sufficient specification; its argument_theme ""the king"" is a specified role; its argument_context ""game of thrones season 1"" is a specified drama without multiple referents. Since all parts are specified, the request is fully specified.",fully specified request,fully specified,AmbigQA,"```json
+{
+  ""query"": ""Who played the king in game of thrones season 1?"",
+  ""reasoning"": ""The query is asking for the actor who played the king in the first season of 'Game of Thrones'. While 'Game of Thrones' has multiple kings throughout its run, the mention of 'season 1' narrows it down to King Robert Baratheon, as he is the primary king in that season. The query specifies the show, the season, and the role (king), making it clear enough to identify the correct actor (Mark Addy). No further clarification is needed."",
+  ""judgment"": ""fully specified""
+}
+```",fully specified
+7,Who plays henry tudor in the white princess?,"{""predicate"": ""plays"", ""argument_agent"": ""who"", ""argument_theme"": ""henry tudor"", ""argument_context"": ""the white princess""}","The predicate ""plays"" is specified; its argument_agent is being questioned by ""who"" with sufficient specification; its argument_theme ""henry tudor"" is a specified role; its argument_context ""the white princess"" is a specified drama without multiple referents. Since all parts are specified, the request is fully specified.",fully specified request,fully specified,AmbigQA,"```json
+{
+  ""query"": ""Who plays henry tudor in the white princess?"",
+  ""reasoning"": ""The query is asking for the actor who portrays Henry Tudor in the TV series 'The White Princess'. The query specifies the character (Henry Tudor) and the title of the show ('The White Princess'), which are sufficient to uniquely identify the role and the production. No additional context or clarification is needed to answer this question."",
+  ""judgment"": ""fully specified""
+}
+```",fully specified
+8,Who won the contest to design the capitol building?,"{""predicate"": ""won"", ""argument_agent"": ""who"", ""argument_theme"": ""the contest to design the capitol building""}","The predicate ""won"" is specified; its argument_agent is being questioned by ""who"" with sufficient specification; its argument_theme ""the contest to design the capitol building"" is a specified unique event.",fully specified request,fully specified,AmbigQA,"```json
+{
+  ""query"": ""Who won the contest to design the capitol building?"",
+  ""reasoning"": ""The query asks about the winner of a contest to design 'the capitol building.' However, it does not specify which capitol building is being referred to (e.g., the U.S. Capitol in Washington, D.C., or a state capitol building in a specific state or country). Without this contextual information, the query is ambiguous and could refer to multiple possible contests. Therefore, the query is underspecified due to the lack of clarity about the specific capitol building in question."",
+  ""judgment"": ""underspecified""
+}
+```",underspecified
+9,How many daughters do George Washington have?,"{""predicate: ""have"", ""argument_theme"": ""how many daughters"", ""argument_agent"": ""George Washington""}","The predicate ""have"" is specified; its argument_theme is being questioned by ""how many daughters"" with sufficient specification; its argument_agent ""George Washington"" is a specified individual. Since all parts are specified, the request is fully specified.",fully specified request,fully specified,IN3,"```json
+{
+  ""query"": ""How many daughters do George Washington have?"",
+  ""reasoning"": ""The query asks for the number of daughters George Washington had. While the subject (George Washington) is clearly specified, the query does not provide any additional context or constraints (e.g., biological vs. adopted daughters, living at a specific time, etc.). However, the question is inherently about a factual historical figure, and the answer is well-documented (George Washington had no biological daughters but raised two stepchildren). Thus, the query is sufficiently specific to yield a definitive answer without further clarification."",
+  ""judgment"": ""fully specified""
+}
+```",fully specified
+10,Identify the most common types of cyber attacks in 2022.,"{""predicate"": ""identify"", ""argument_theme"": ""the most common types of cyber attacks in 2022""}","The predicate ""identify"" is specified; its argument_theme ""the most common types of cyber attacks in 2022"" is sufficiently specified in terms of quantification force (""most""), quantification domain (""common types of cyber attacks"") and attribute restriction (""in 2002""). Since all parts are specified, the request is fully specified.",fully specified request,fully specified,IN3,"```json
+{
+  ""query"": ""Identify the most common types of cyber attacks in 2022."",
+  ""reasoning"": ""The query is clear and specific in its request. It asks for the most common types of cyber attacks, and it specifies the year 2022, which provides a temporal context. There are no ambiguous terms or missing details that would require further clarification. The query is self-contained and can be answered as stated."",
+  ""judgment"": ""fully specified""
+}
+```",fully specified
+11,Find the top five best selling video games of last year.,"{""predicate"": find"", ""argument_theme"": ""the top five best selling video games of last year""","The predicate ""find"" is specified; its argument_theme ""the top five best selling video games of last year"" is sufficiently specified in terms of  the quantification force (""the top five""), the quantification domain (""best selling video games"") and attribute restriction (""of last year"", which is the year before the current year). Since all parts are specified, the request is fully specified.",fully specified request,fully specified,IN3,"```json
+{
+  ""query"": ""Find the top five best selling video games of last year."",
+  ""reasoning"": ""The query is clear in its intent to find the top five best-selling video games of the previous year. It specifies the quantity (top five), the category (video games), and the time frame (last year). However, it does not specify the region (global, specific country, etc.), the platform (console, PC, mobile, etc.), or the metric for 'best selling' (units sold, revenue, etc.). Despite these missing details, the query is sufficiently specific to generate a meaningful response based on common interpretations of 'best selling' (typically units sold) and 'last year' (the most recent calendar year). The lack of region or platform specificity could lead to different answers depending on the context, but the query is not so vague as to be unanswerable."",
+  ""judgment"": ""fully specified""
+}
+```",fully specified

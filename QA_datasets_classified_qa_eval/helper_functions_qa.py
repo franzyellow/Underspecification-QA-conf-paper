@@ -34,7 +34,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-def batch_generate_responses_qwen3(prompts, system_prompt=system_prompt,
+def batch_generate_responses_qwen3(tokenizer, model, prompts, system_prompt,
                              temperature=0.7, max_new_tokens=32768, batch_size=5,
                              enable_thinking=True, parse_thinking=True):
     """
@@ -171,8 +171,8 @@ def get_judgments_from_responses(responses: List[str]) -> List[Optional[str]]:
 
 
 
-def run_experiment(input_prompts, test_df):
-  output = batch_generate_responses_qwen3(input_prompts)
+def run_experiment(tokenizer, model, input_prompts, system_prompt, test_df):
+  output = batch_generate_responses_qwen3(tokenizer, model, input_prompts, system_prompt)
   df = test_df.copy()
   df['thinking'] = output[0]
   df['model_response'] = output[1]
@@ -182,7 +182,49 @@ def run_experiment(input_prompts, test_df):
 
   return df
 
-def prepare_test_prompts(test_df, task_text, learning_df=None, instruction_text=None, theory=False):
+def retrieve_results(result_df, output_name):
+  processed_judgments = result_df['model_pred'].tolist()
+
+  if "error" in processed_judgments:
+    print("There are unrecognized labels.")
+    result_df.to_csv(f'{output_name}_error.csv')
+  else:
+    print("No error found, directly process the data.")
+    print(classification_report(result_df["gold_judgment"], result_df['model_pred']))
+    result_df.to_csv(f'{output_name}.csv')
+
+    judgment_gold = result_df['gold_judgment'].tolist()
+    judgment_model = result_df["model_pred"].tolist()
+
+    binary_labels = ['underspecified', 'fully specified']
+
+    cm = confusion_matrix(judgment_gold, judgment_model, labels=binary_labels)
+    disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=binary_labels)
+
+    disp.plot(cmap='Blues')  # 可以调整 colormap
+
+def retrieve_results_nosave(result_df):
+    processed_judgments = result_df['model_pred'].tolist()
+
+    if "error" in processed_judgments:
+        print("There are unrecognized labels.")
+        result_df.to_csv(f'{output_name}_error.csv')
+    else:
+        print("No error found, directly process the data.")
+        print(classification_report(result_df["gold_judgment"], result_df['model_pred']))
+        
+
+        judgment_gold = result_df['gold_judgment'].tolist()
+        judgment_model = result_df["model_pred"].tolist()
+
+        binary_labels = ['underspecified', 'fully specified']
+
+        cm = confusion_matrix(judgment_gold, judgment_model, labels=binary_labels)
+        disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=binary_labels)
+
+        disp.plot(cmap='Blues')  # 可以调整 colormap
+
+def prepare_test_prompts(test_df, task_text, learning_df=None, instruction_text=None, example_head=None, theory=False):
   print("Start preparing prompts...")
   if learning_df is not None and instruction_text is not None:
     print(f"# learning samples: {len(learning_df)}")
@@ -198,7 +240,7 @@ def prepare_test_prompts(test_df, task_text, learning_df=None, instruction_text=
         examples.append(json.dumps(example, ensure_ascii=False))
 
       examples_text = '\n\n'.join(examples)
-      base_prompt = instruction_text + examples_text + task_text
+      base_prompt = instruction_text + example_head + examples_text + task_text
     else:
       for _, row in learning_df.iterrows():
         example = {
@@ -208,7 +250,9 @@ def prepare_test_prompts(test_df, task_text, learning_df=None, instruction_text=
         examples.append(json.dumps(example, ensure_ascii=False))
 
       examples_text = '\n\n'.join(examples)
-      base_prompt = instruction_text + examples_text + task_text
+      base_prompt = instruction_text + example_head + examples_text + task_text
+  elif learning_df is None and instruction_text is not None:
+    base_prompt = instruction_text + task_text
 
   else:
     base_prompt = task_text
@@ -216,7 +260,7 @@ def prepare_test_prompts(test_df, task_text, learning_df=None, instruction_text=
   print(f"# Testing data points: {len(test_df)}")
   test_prompts = []
   for _, row in test_df.iterrows():
-    query = row['question']
+    query = row['request']
     complete_prompt = base_prompt.replace("TARGET", query)
     test_prompts.append(complete_prompt)
 
@@ -557,9 +601,9 @@ def plot_metric_distributions(scores_1, scores_2, label_1="Group 1", label_2="Gr
 
     return Image(filename)
 
-async def answer_accuracy(input_dataset, long_answer=False, evaluator=evaluator_llm):
+async def answer_accuracy(input_dataset, evaluator_llm, long_answer=False):
     # 在函数开始时创建一次 scorer
-    scorer = AnswerAccuracy(llm=evaluator)
+    scorer = AnswerAccuracy(llm=evaluator_llm)
     
     if long_answer:
         score_list_long = []

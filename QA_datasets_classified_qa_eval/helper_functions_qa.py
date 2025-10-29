@@ -25,6 +25,7 @@ import openai
 import os
 import time
 import pandas as pd
+import torch
 
 from ragas.llms import LangchainLLMWrapper
 from langchain_deepseek import ChatDeepSeek
@@ -601,7 +602,7 @@ def plot_metric_distributions(scores_1, scores_2, label_1="Group 1", label_2="Gr
 
     return Image(filename)
 
-async def answer_accuracy(input_dataset, evaluator_llm, long_answer=False):
+async def answer_accuracy(input_dataset, evaluator_llm, long_answer=False, ref_col = "short_answers"):
     # 在函数开始时创建一次 scorer
     scorer = AnswerAccuracy(llm=evaluator_llm)
     
@@ -624,9 +625,9 @@ async def answer_accuracy(input_dataset, evaluator_llm, long_answer=False):
                     score_list_long.append(0.0)
 
                 # 短答案评分 - 处理列表情况
-                if 'model_short_answer' in row and 'short_answers' in row:
+                if 'model_short_answer' in row and ref_col in row:
                     model_answers = row['model_short_answer'] if isinstance(row['model_short_answer'], list) else [row['model_short_answer']]
-                    reference_answers = row['short_answers'] if isinstance(row['short_answers'], list) else [row['short_answers']]
+                    reference_answers = row[ref_col] if isinstance(row[ref_col], list) else [row[ref_col]]
                     
                     # 计算所有组合的分数，取最高分
                     max_score = 0.0
@@ -659,9 +660,9 @@ async def answer_accuracy(input_dataset, evaluator_llm, long_answer=False):
         for i, row in enumerate(tqdm(input_dataset, desc="Calculating short answer accuracy")):
             try:
                 # 短答案评分 - 处理列表情况
-                if 'model_short_answer' in row and 'short_answers' in row:
+                if 'model_short_answer' in row and ref_col in row:
                     model_answers = row['model_short_answer'] if isinstance(row['model_short_answer'], list) else [row['model_short_answer']]
-                    reference_answers = row['short_answers'] if isinstance(row['short_answers'], list) else [row['short_answers']]
+                    reference_answers = row[ref_col] if isinstance(row[ref_col], list) else [row[ref_col]]
                     
                     # 计算所有组合的分数，取最高分
                     max_score = 0.0

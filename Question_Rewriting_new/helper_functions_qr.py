@@ -625,3 +625,58 @@ def prepare_test_prompts(test_df, task_text):
     print(f"Average prompt length: {avg_length:,} bytes (~{avg_length//4:,} tokens)")
 
     return test_prompts
+
+
+#---- for lexical overlap analysis ----
+# tool functions
+def tokenize(text: str) -> list[str]:
+    """Returning list of tokens after lowercasing and punctuationr removal"""
+    if not isinstance(text, str):
+        return []
+    text = text.lower()
+    # remove punctuation marks
+    text = re.sub(r"[^\w\s]", " ", text)
+    return text.split()
+
+def get_ngrams(tokens: list[str], n: int) -> Counter:
+    """Returning n-gram Counter dicts"""
+    return Counter(tuple(tokens[i:i+n]) for i in range(len(tokens) - n + 1))
+
+# Overlap calculation functions
+def jaccard_similarity(tokens_a: list[str], tokens_b: list[str]) -> float:
+    """Jaccard = |A ∩ B| / |A ∪ B|, based on unigram sets"""
+    set_a, set_b = set(tokens_a), set(tokens_b)
+    if not set_a and not set_b:
+        return 0.0
+    return len(set_a & set_b) / len(set_a | set_b)
+
+def ngram_overlap_f1(tokens_a: list[str], tokens_b: list[str], n: int) -> float:
+    """
+    ROUGE-style n-gram F1 overlap:
+        precision = matched / len(a)
+        recall    = matched / len(b)
+        F1        = harmonic mean
+    n=1 → unigram overlap (ROUGE-1)
+    n=2 → bigram  overlap (ROUGE-2)
+    """
+    ngrams_a = get_ngrams(tokens_a, n)
+    ngrams_b = get_ngrams(tokens_b, n)
+    if not ngrams_a or not ngrams_b:
+        return 0.0
+    # Taking the intersection of Counter objects and take the one with min counting value
+    overlap = sum((ngrams_a & ngrams_b).values())
+    precision = overlap / sum(ngrams_a.values())
+    recall    = overlap / sum(ngrams_b.values())
+    if precision + recall == 0:
+        return 0.0
+    return 2 * precision * recall / (precision + recall)
+
+# Batch computation function
+def compute_metrics(text_a: str, text_b: str) -> dict:
+    tok_a = tokenize(text_a)
+    tok_b = tokenize(text_b)
+    return {
+        "jaccard":         jaccard_similarity(tok_a, tok_b),
+        "unigram_f1":      ngram_overlap_f1(tok_a, tok_b, n=1),
+        "bigram_f1":       ngram_overlap_f1(tok_a, tok_b, n=2),
+    }

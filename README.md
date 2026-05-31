@@ -95,11 +95,11 @@ LLMs score significantly lower on UND vs. FS subsets across all datasets and mod
 │   ├── helper_functions_testing.py
 │   └── [notebooks for DeepSeek / Llama / Qwen3 variants]
 │
-├── QA_datasets_classified_qa_eval/        # Steps 2 & 4: QA evaluation
+├── QA_datasets_classified_qa_eval/        # Steps 2: QA evaluation for UND and FS subsets
 │   ├── helper_functions_qa.py
 │   └── [notebooks per dataset × model]
 │
-├── Question_Rewriting_new/               # Step 3: UND → FS rewriting
+├── Question_Rewriting_new/               # Step 3 & 4: UND → FS rewriting and QA assessment for rewritten UND questions
 │   ├── helper_functions_qr.py
 │   └── [notebooks per dataset × rewriter model]
 │

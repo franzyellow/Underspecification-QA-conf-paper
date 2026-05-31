@@ -87,8 +87,8 @@ LLMs score significantly lower on UND vs. FS subsets across all datasets and mod
 ```
 .
 ├── Data/
-│   ├── UNDER.csv                          # 855-question UND benchmark
-│   ├── UNDER_gold.csv                     # 150-question expert-verified subset
+│   ├── UNDER.csv                          # 855-question annotated UND dataset
+│   ├── UNDER_gold.csv                     # 150-question annotated & expert-verified UNDER-gold dataset
 │   └── UNDER_gold (tracking annotations).xlsx
 │
 ├── Testing Off-the-Shelf LLMs/            # Step 1: classifier selection
@@ -146,7 +146,7 @@ uv run jupyter lab
 | 1. Classifier selection | `Testing Off-the-Shelf LLMs/` | One notebook per model candidate |
 | 2. QA evaluation (orig.) | `QA_datasets_classified_qa_eval/` | `{Dataset}_{Model}_BaseClass.ipynb` |
 | 3. Question rewriting | `Question_Rewriting_new/` | `{Dataset}_{RewriterModel}_Rewriting.ipynb` |
-| 4. QA evaluation (rewr.) | `QA_datasets_classified_qa_eval/` | Same notebooks, rewritten-question input |
+| 4. QA evaluation (rewr.) | `Question_Rewriting_new/` | Same notebooks, rewritten-question input |
 
 Visualisations are produced by `visualization.ipynb` inside each directory.
 
